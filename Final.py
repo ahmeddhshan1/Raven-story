@@ -171,12 +171,6 @@ class Birdie():
 
 
 if __name__ == '__main__':
-    # video_path =input("Enter your video path\n")
-    # video_path=video_path.replace("\\", "/")
-    # folder_path =input("Enter your folder path\n")
-    # folder_path=folder_path.replace("\\", "/")
-    # branch_path =input("Enter your branch path\n")
-    # branch_path=branch_path.replace("\\", "/")
     video_path = r"C:\Users\ahmed\Videos\Acute Myna Ceo Water Displacement.m4v"
     object_path = r"E:\New folder"
     branch_path = r"E:\frame100.jpg"
