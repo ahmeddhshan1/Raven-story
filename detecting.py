@@ -8,20 +8,12 @@ import os
 import numpy as np
 
 class detectings:
-    @staticmethod
+    # @staticmethod
 
-    # def __init__(self,frame,object_path , branch_pass):
-    #     '''
-    #         Constructor
-    #         self.video_path = video_path
-    #         self.object_path = object_path
-    #         self.branch_pass = branch_pass
-    #     '''
-    #     self.frame = frame
-    #     self.object_path = object_path
-    #     self.branch = branch_pass
-
-    def detect_objects(frame,object_path):
+    def __init__(self):
+        pass
+    
+    def detect_objects(self,frame,object_path):
         '''
             :param frame: the path to the folder
             :param tem_path: the path to the objects
@@ -31,6 +23,10 @@ class detectings:
 
         objects=[]
         maxes=[]
+        centers_x=[]
+        centers_y=[]
+        object_w=[]
+        object_h=[]
 
         for i in os.listdir(object_path):
             pl=cv.imread(object_path+'\\'+i,0)
@@ -48,11 +44,17 @@ class detectings:
 
             for pt in zip(*loc[::-1]):
                 x_center=pt[0]+wid/2
-                w_center=pt[1]+hig/2
+                y_center=pt[1]+hig/2
+                centers_x.append(x_center)
+                centers_y.append(y_center)
+                object_w.append(wid/2)
+                object_h.append(hig/2)
 
-        return x_center,w_center,wid/2,hig/2
+                
+
+        return centers_x,centers_y,object_w,object_h
     
-    def detect_branch(branch):
+    def detect_branch(self,branch):
         '''
             :param tem: is the path of the woden branch for this vedio
             :return: the width and height
@@ -60,3 +62,20 @@ class detectings:
         tem=cv.imread(branch,0)
         wid,hig=tem.shape[::-1]
         return wid,hig
+
+    def bird_location(self,contours):
+        '''
+            :param contours: the contours of the bird
+            :return: the center of the bird
+        '''
+
+        for con in contours:
+                area= cv.contourArea(con)
+                if area < 7000 :
+                    continue
+                max_contour=max(contours,key=cv.contourArea)
+                x,y,w,h=cv.boundingRect(max_contour)
+                new_x=x+(w/2)
+                new_y=y+(h/2)  
+
+        return new_x,new_y,w/2,h/2
