@@ -37,10 +37,18 @@ class detectings:
             wid,hig=objects[j].shape[::-1]
             result=cv.matchTemplate(gray_img,objects[j],cv.TM_CCOEFF_NORMED)
             Max=np.amax(result)
-            maxes.append(Max)
+            x=False
+            for i in maxes:
+                if Max==i:
+                    x=True
+                    break
+                
+            if x:continue
 
+            # if Max==maxes[-1]:continue
+            maxes.append(Max)
             threshold=maxes[-1]
-            loc=np.where(result>=threshold)
+            loc=np.where(result==threshold)
 
             for pt in zip(*loc[::-1]):
                 x_center=pt[0]+wid/2

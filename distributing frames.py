@@ -42,14 +42,16 @@ class subtract_frames(threading.Thread):
         x_center=[]
         y_center=[]
         hittings=[]
+
+        time.sleep(5)
         while  True:
-            time.sleep(.15)
+            time.sleep(.005)
             if self.queue.empty():break
             frame=self.queue.get()
             prepared_frame = back_sub.apply(frame)
             _,prepared_frame=cv.threshold(prepared_frame,254,255,cv.THRESH_BINARY)
             prepared_frame=cv.GaussianBlur(prepared_frame,(5,5),0)
-            print(self.queue.qsize())
+            # print(self.queue.qsize())
             contours,_=cv.findContours(prepared_frame,cv.RETR_TREE,cv.CHAIN_APPROX_NONE)
             if len(contours) <=1 :continue
             area=cv.contourArea(max(contours,key=cv.contourArea))
@@ -76,17 +78,11 @@ class subtract_frames(threading.Thread):
         self.y=y_center
 
 
-    
-
-        
-
-
-
 if __name__ == '__main__':
     video_path = r"F:/raven project/project videos/T.M/CHRONIC/team 9/chronic myna 2nd blue tool making TS 9 spontaneously perform.mp4"
     object_path = r"E:\New folder"
     branch_path = r"E:\frame100.jpg"
-    queue = queue.Queue(100)
+    queue = queue.Queue(1000)
     th1=distributing_frames(video_path,queue)
     th2=subtract_frames(queue,object_path)
     th1.start()
