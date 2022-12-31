@@ -15,8 +15,8 @@ class detectings:
     
     def detect_objects(self,frame,object_path):
         '''
-            :param frame: the path to the folder
-            :param tem_path: the path to the objects
+            :param frame: the video frame
+            :param object_path : the path of the objects
             :return: four lists of x axis , y axis ,width , height of the object center
         '''
         gray_img=cv.cvtColor(frame,cv.COLOR_BGR2GRAY)
@@ -45,7 +45,6 @@ class detectings:
                 
             if x:continue
 
-            # if Max==maxes[-1]:continue
             maxes.append(Max)
             threshold=maxes[-1]
             loc=np.where(result==threshold)
@@ -64,7 +63,7 @@ class detectings:
     
     def detect_branch(self,branch):
         '''
-            :param tem: is the path of the woden branch for this vedio
+            :param branch: is the path of the woden branch for this vedio
             :return: the width and height
         '''
         tem=cv.imread(branch,0)
@@ -74,7 +73,7 @@ class detectings:
     def bird_location(self,contours):
         '''
             :param contours: the contours of the bird
-            :return: the center of the bird
+            :return: the center of the bird and the half of both the height and width of the contour
         '''
 
         for con in contours:

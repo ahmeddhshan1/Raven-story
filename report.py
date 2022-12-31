@@ -14,9 +14,9 @@ class report:
 
     def travel_distance(self,x_center, y_center):
         '''
-        :param contours: the detected movements in the video.
-        this function return the total distance that the bird walked
-        :return sum_distance: the total distance walked by bird
+        :param x_center: contour center on the x-axis
+        :param y_center: contour center on the y-axis
+        :return sum_distance: the total distance that the bird walked
         '''
         distance=[]
 
@@ -31,7 +31,7 @@ class report:
 
     
 
-    def hit_object(self,x_object, y_object,object_w,object_h,x_bird, y_bird,bird_w,bird_h):
+    def hit_object(self,x_object, y_object,object_w,object_h,x_bird, y_bird,bird_w,bird_h,count):
         '''
             :param x_object: list of objects x_axis
             :param y_object: list of objects y_axis
@@ -41,7 +41,8 @@ class report:
             :param object_h: list of object height
             :param bird_w: bird width
             :param bird_h: bird height
-            :return: bool list of hittings object
+            :param count: the frame number
+            :return: bool list of hittings object and frame number
         '''
         hit=[]
         d=[]
@@ -55,16 +56,20 @@ class report:
                 if y_object[j]+object_h[j] <= y_bird :
                     if d[i]<=object_h[j]+h:
                         hit.append(True)
+                        hit.append(count)
                     else:
                         hit.append(False)
+                        hit.append(count)
                 # elif y_object[i]-object_h[i] > y_bird:
                 #     if d[i]<object_h+bird_h:
                 #         hit.append(True)
                 #     else:
                 #         hit.append(False)
                 else:
-                        if d[i]<=object_w[j]+h:
-                            hit.append(True)
-                        else:
-                            hit.append(False)
+                    if d[i]<=object_w[j]+h:
+                        hit.append(True)
+                        hit.append(count)
+                    else:
+                        hit.append(False)
+                        hit.append(count)
         return hit

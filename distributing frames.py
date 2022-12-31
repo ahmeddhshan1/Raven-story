@@ -17,6 +17,9 @@ class distributing_frames(threading.Thread):
         self.queue = queue
 
     def run(self):
+        '''
+            disributing video into frames
+        '''
         vidoe_capt=cv.VideoCapture(self.video_path)
         while True:
             ret, frame = vidoe_capt.read()
@@ -35,6 +38,9 @@ class subtract_frames(threading.Thread):
         self.y = None
 
     def run(self):
+        '''
+            get the distributed frames and subtract them
+        '''
         count=0
         back_sub=cv.createBackgroundSubtractorMOG2(history=90,varThreshold=90,detectShadows=False)
         location=detectings()
@@ -48,6 +54,7 @@ class subtract_frames(threading.Thread):
             time.sleep(.005)
             if self.queue.empty():break
             frame=self.queue.get()
+            count+=1
             prepared_frame = back_sub.apply(frame)
             _,prepared_frame=cv.threshold(prepared_frame,254,255,cv.THRESH_BINARY)
             prepared_frame=cv.GaussianBlur(prepared_frame,(5,5),0)
@@ -65,7 +72,7 @@ class subtract_frames(threading.Thread):
 
             
 
-            hittings.append(reporting.hit_object(obj_x,obj_y,obj_w,obj_h,x_bird,y_bird,w_bird,h_bird))
+            hittings.append(reporting.hit_object(obj_x,obj_y,obj_w,obj_h,x_bird,y_bird,w_bird,h_bird,count))
 
             count+=1
         print(count)
